@@ -1,0 +1,102 @@
+.dashboard {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filters select,
+  .filters input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 48%;
+  }
+  
+  .grid {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card h3 {
+    margin: 0;
+    color: #555;
+  }
+  
+  .card p {
+    color: #888;
+    margin: 10px 0;
+  }
+  
+  .card button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .problem-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .problem-list li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .problem-list li strong {
+    color: #555;
+  }
+  
+  @media (max-width: 600px) {
+    .filters {
+      flex-direction: column;
+    }
+  
+    .filters select,
+    .filters input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

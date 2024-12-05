@@ -1,0 +1,110 @@
+/* Container styling for the edit problem form */
+.edit-problem-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px 35px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+  
+  /* Header styling */
+  .edit-problem-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #f4f4f4;
+    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Form styling */
+  .edit-problem-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Form group styling */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* Label styling */
+  .form-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e3e3e3;
+  }
+  
+  /* Input fields styling */
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: 0.3s ease-in-out;
+    box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(0, 242, 254, 0.8);
+  }
+  
+  /* Textarea customization */
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  /* Submit button styling */
+  .submit-button {
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background-color: #00d4ff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    align-self: center;
+    max-width: 220px;
+    margin: 20px auto 0;
+    text-align: center;
+  }
+  
+  .submit-button:hover {
+    background-color: #00b2d6;
+    transform: translateY(-3px);
+  }
+  
+  .submit-button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Mobile responsiveness */
+  @media screen and (max-width: 480px) {
+    .edit-problem-container {
+      padding: 20px 25px;
+    }
+  
+    .edit-problem-container h2 {
+      font-size: 1.8rem;
+    }
+  
+    .submit-button {
+      font-size: 1rem;
+    }
+  }
