@@ -1,13 +1,13 @@
 import Problem from "../models/problem.model.js";
 
 export const postProblem=async(req,res)=>{
-    const {title,description,district,images,email,mobilenumber,constituency}=req.body;
-    console.log(title,description,district,images,email,mobilenumber,constituency);
+    const {title,description,district,images,email,mobilenumber,constituency,category,details}=req.body;
+    console.log(title,description,district,images,email,mobilenumber,constituency,category);
     try{
-        if(email==null || title==null || description==null|| district==null || mobilenumber==null || constituency==null){
+        if(email==null || title==null || description==null|| district==null || mobilenumber==null || constituency==null || category==null || details==null){
             return res.json({message:"Enter all required fields"});
         }
-        const newProblem=new Problem({email,title,description,district,images,mobilenumber,constituency});
+        const newProblem=new Problem({email,title,description,district,images,mobilenumber,constituency,category,details});
         const response=await newProblem.save();
         console.log(response)
         return res.status(201).json({message:"problem posted successfully"})
@@ -61,12 +61,13 @@ export const updateStatus=async(req,res)=>{
 }
 export const updateDetails=async(req,res)=>{
     try {
-        const {problemId,title,description,district,images,mobilenumber,constituency}=req.body;
-        console.log("edit:",{title,description,district,images,mobilenumber,constituency})
-        if(title==null || description==null|| district==null || mobilenumber==null || constituency==null){
+        const {problemId,title,description,district,images,mobilenumber,constituency,details}=req.body;
+        console.log("edit:",{problemId,title,description,district,images,mobilenumber,constituency,details})
+        if(title==null || description==null|| district==null || mobilenumber==null || constituency==null|| details==null){
             return res.json({message:"Enter all required fields"});
         }
-        const response=await Problem.findOneAndUpdate({problemId},{title,description,district,images,mobilenumber,constituency})
+        const response=await Problem.findOneAndUpdate({problemId:problemId},{title,description,district,images,mobilenumber,constituency,details})
+        console.log("editres:",response);
         return res.status(201).json({message:response});
     } catch (error) {
         console.log(error);
