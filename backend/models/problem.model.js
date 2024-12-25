@@ -34,10 +34,18 @@ const problemSchema = new mongoose.Schema({
         type: String,
         default: 'Inprogress',
     },
+    category:{
+        type:String,
+        required:true
+    },
     mobilenumber: {
         type: Number,
         required: true,
     },
+    details:{
+        type:String,
+        required:true
+    }
 }, { timestamps: true });
 
 const Problem = mongoose.model('Problem', problemSchema);
