@@ -15,7 +15,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/problem/getallproblems");
+        const response = await axios.get("https://connect-aawd.onrender.com/api/problem/getallproblems");
         setProblems(response.data); // Assuming response.data contains an array of problems
         setFilteredProblems(response.data); // Initialize filtered problems with all data
         setLoading(false);
