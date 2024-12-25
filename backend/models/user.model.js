@@ -10,6 +10,17 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
+    username:{
+        type:String,
+        default:""
+    },
+    profilepic:{
+        type:String,
+        default:"",
+    },
+    gender:{
+        type:String,
+    },
     verified:{
         type:Boolean,
         default:false
