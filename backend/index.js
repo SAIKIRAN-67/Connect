@@ -20,6 +20,7 @@ const __dirname=path.resolve();
 app.use(express.json());
 app.use(cookieParser());
 
+
 app.listen(3000,()=>{
     console.log("server is running at port no 3000")
 })
