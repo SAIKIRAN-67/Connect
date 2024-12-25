@@ -30,8 +30,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
-   
+    background: linear-gradient(180deg, #e3f2fd, #f0f4c3);
     justify-content: center;
     border-radius: 8px;
     overflow: hidden;
@@ -110,7 +109,6 @@
     .problem-container {
       flex-direction: column; /* Stacks image and details vertically */
     }
-  
     .problem-image {
       max-width: 100%;
       height: 200px;

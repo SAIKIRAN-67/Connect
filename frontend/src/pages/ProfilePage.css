@@ -4,6 +4,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f9fafb; /* Light, neutral background */
     color: #333;
+    background: linear-gradient(180deg, #e3f2fd, #f0f4c3);
   }
   
   /* Profile Container */

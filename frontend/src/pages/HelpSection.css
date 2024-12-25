@@ -1,0 +1,82 @@
+.help-section-wrapper {
+    background: linear-gradient(135deg, #f0f9ff, #cce7f0); /* Cool blue tones */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .help-section-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .help-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0077b6; /* Deep blue */
+    flex: 2;
+    word-wrap: break-word;
+  }
+  
+  .help-detail {
+    font-size: 1rem;
+    color: #495057; /* Neutral dark gray */
+    margin: 0 10px;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .help-highlight {
+    font-weight: bold;
+    color: #023e8a; /* Rich blue */
+  }
+  
+  
+  /* Laptop Screens (1200px and below) */
+  @media (max-width: 1200px) {
+    .help-title {
+      font-size: 1.3rem;
+    }
+  
+    .help-detail {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Tablet Screens (768px and below) */
+  @media (max-width: 768px) {
+    .help-section-wrapper {
+      flex-direction: column; /* Stack details vertically */
+      text-align: center;
+    }
+  
+    .help-title {
+      margin-bottom: 10px;
+    }
+  
+    .help-detail {
+      margin: 5px 0;
+    }
+  }
+  
+  /* Mobile Screens (480px and below) */
+  @media (max-width: 480px) {
+    .help-title {
+      font-size: 1.2rem;
+    }
+  
+    .help-detail {
+      font-size: 0.8rem;
+    }
+  
+    .help-section-wrapper {
+      padding: 15px; /* Adjust padding for smaller screens */
+    }
+  }
+  

@@ -3,8 +3,10 @@ import axios from "axios";
 import Navbar from "../Navbar"; // Navigation Bar
 import Problem from "../Problem"; // Problem Component
 import "./Home.css"; // External CSS
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import Homeproblem from "./Homeproblem";
+import Cookies from 'js-cookie';
+import { Cursor } from "mongoose";
 const constituencies = {
   'Anantapur': ["Rayadurg", "Uravakonda", "Guntakal", "Tadipatri", "Singanamala", "Anantapur Urban", "Kalyandurg", "Raptadu"],
   'Sri Sathya Sai': ["Madakasira", "Hindupur", "Penukonda", "Puttaparthi", "Dharmavaram", "Kadiri"],
@@ -39,11 +41,18 @@ function Home() {
   const [districts, setDistricts] = useState(Object.keys(constituencies)); // Dynamically set districts from the object
   const [constituencyList, setConstituencies] = useState([]); // List of constituencies that will be filtered
   const [filters, setFilters] = useState({ district: "", constituency: "", searchId: "" });
-
+  const navigate=useNavigate();
+  const togglePanel = () => {
+    setShowPanel(!showPanel); // Toggle visibility
+  };
   useEffect(() => {
+    const user=Cookies.get("email");
+    if(user== null|| user==""){
+      navigate("/signin")
+    }
     const fetchProblems = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/problem/getallproblems");
+        const response = await axios.get("https://connect-aawd.onrender.com/api/problem/getallproblems");
         setProblems(response.data);
         setLoading(false);
       } catch (err) {
@@ -64,27 +73,80 @@ function Home() {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
-
+  function openNav() {
+    document.getElementById("sideMenu")
+      .style.width = "300px";
+    document.getElementById("contentArea")
+      .style.marginLeft = "300px";
+  }
+  
+  function closeNav() {
+    document.getElementById("sideMenu")
+      .style.width = "0";
+    document.getElementById("contentArea")
+      .style.marginLeft = "0";
+  }
+  
+  function showContent(content) {
+    document.getElementById("contentTitle")
+      .textContent = content + " page";
+      
+    closeNav();
+  }
   const filteredProblems = problems.filter((problem) => {
-    const { district, constituency, searchId } = filters;
+    const { district, constituency, searchId,title } = filters;
     return (
       (!district || problem.district === district) &&
       (!constituency || problem.constituency === constituency) &&
-      (!searchId || problem.problemId.includes(searchId))
+      (!title || problem.title.includes(title))
     );
   });
-
+  const handleLogout=()=>{
+    Cookies.remove("email");
+    navigate("/signin");
+  }
   return (
     <div className="home-container">
+      <div id="sideMenu" className="sideMenu">
+        <a className="close" onClick={closeNav}>X</a>
+        <div className="filters">
+            <select className="district1" name="district" value={filters.district} onChange={handleDistrictChange}>
+              <option value="">Select District</option>
+              {districts.map((district) => (
+                <option key={district} value={district}>
+                  {district}
+                </option>
+              ))}
+            </select>
+            <select className="constituency1" name="constituency" value={filters.constituency} onChange={handleFilterChange}>
+              <option value="">Select Constituency</option>
+              {constituencyList.map((constituency) => (
+                <option key={constituency} value={constituency}>
+                  {constituency}
+                </option>
+              ))}
+            </select>
+            <input
+              className="tit1"
+              type="text"
+              name="title"
+              placeholder="    Search by title"
+              value={filters.title}
+              onChange={handleFilterChange}
+            />
+        </div>
+      </div>
       <header className="home-header">
         <div className="nav-links">
+          <span onClick={openNav}><img  className="search" height={20} width={20} src="https://cdn-icons-png.flaticon.com/128/18598/18598801.png"/></span>
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
           <Link to="/help">Help</Link>
           <Link to="/post">Post</Link>
+          <Link><span onClick={handleLogout} className="logoutmobile">Logout</span></Link>
         </div>
         <div className="filters">
-          <select name="district" value={filters.district} onChange={handleDistrictChange}>
+          <select className="district" name="district" value={filters.district} onChange={handleDistrictChange}>
             <option value="">Select District</option>
             {districts.map((district) => (
               <option key={district} value={district}>
@@ -92,7 +154,7 @@ function Home() {
               </option>
             ))}
           </select>
-          <select name="constituency" value={filters.constituency} onChange={handleFilterChange}>
+          <select className="constituency" name="constituency" value={filters.constituency} onChange={handleFilterChange}>
             <option value="">Select Constituency</option>
             {constituencyList.map((constituency) => (
               <option key={constituency} value={constituency}>
@@ -101,12 +163,16 @@ function Home() {
             ))}
           </select>
           <input
+            className="tit"
             type="text"
-            name="searchId"
-            placeholder="Search by ID"
-            value={filters.searchId}
+            name="title"
+            placeholder="Search by title"
+            value={filters.title}
             onChange={handleFilterChange}
           />
+        </div>
+        <div>
+          <span onClick={handleLogout} className="logout">Logout</span>
         </div>
       </header>
       <div className="problems">
@@ -127,3 +193,4 @@ function Home() {
 }
 
 export default Home;
+

@@ -23,7 +23,7 @@ const ProblemDetails = ({ problems }) => {
   const saveStatus = async (problemId) => {
     try {
       const updatedStatus = problemStatus[problemId];
-      const response = await axios.post('http://localhost:3000/api/problem/updatestatus', {
+      const response = await axios.post('https://connect-aawd.onrender.com/api/problem/updatestatus', {
         problemId,
         status: updatedStatus,
       });

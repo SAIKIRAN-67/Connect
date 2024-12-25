@@ -1,0 +1,219 @@
+.help-page {
+    
+    background: linear-gradient(180deg, #e3f2fd, #f0f4c3); /* Soft blue to green gradient */
+    font-family: Arial, sans-serif;
+  }
+  
+  .help-page-title {
+    text-align: center;
+    color: #00509e; /* Bold navy blue */
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .filter-section {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-input {
+    padding: 12px;
+    width: 250px;
+    border: 2px solid #74c0fc; /* Soft blue border */
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .filter-input:focus {
+    outline: none;
+    border-color: #0077b6; /* Rich blue on focus */
+    box-shadow: 0 0 10px rgba(0, 119, 182, 0.4); /* Blue glow */
+  }
+  
+  .filter-input::placeholder {
+    color: #adb5bd; /* Soft gray placeholder text */
+    font-style: italic;
+  }
+  .nav-links {
+    display: flex;
+    gap: 15px; /* Spacing between links */
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+  
+    font-size: 1.2em;
+  }
+  
+  .nav-links a:hover {
+    color: #ffd700; /* Gold hover effect */
+  }
+  .search-button {
+    padding: 12px 20px;
+    background-color: #0077b6; /* Deep blue */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  .home-header {
+    position: fixed;
+    top: 0;
+    width: 120%;
+    float: left;
+    background-color: #3a7bd5; /* Gradient Blue */
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-evenly; /* Space components evenly */
+    align-items: center;
+    z-index: 1000;
+  }
+  .search-button:hover {
+    background-color: #00509e; /* Darker blue */
+    transform: scale(1.05); /* Slight zoom */
+  }
+  
+  .help-section-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .no-results {
+    text-align: center;
+    color: #d32f2f; /* Red for no results */
+    font-size: 1.2rem;
+  }
+  
+  
+  /* Laptop Screens (1200px and below) */
+  @media (max-width: 1200px) {
+    .help-section-container {
+      padding: 0 0; /* Adjust padding for smaller screens */
+    }
+  
+    .filter-input {
+      width: 180px; /* Slightly smaller inputs */
+    }
+  }
+  
+  /* Tablet Screens (768px and below) */
+  @media (max-width: 768px) {
+    .filter-section {
+      flex-direction: column; /* Stack filters vertically */
+      align-items: center;
+    }
+  
+    .filter-input {
+      width: 100%; /* Full-width inputs for tablets */
+    }
+  
+    .help-page-title {
+      font-size: 1.8rem; /* Slightly smaller font for title */
+    }
+  
+    .help-section-container {
+      padding: 0 10px; /* Further reduce padding */
+    }
+  }
+  
+  /* Mobile Screens (480px and below) */
+  @media (max-width: 480px) {
+    .help-page-title {
+      font-size: 1.5rem; /* Smaller title for mobile */
+    }
+  
+    .filter-input {
+      width: 100%; /* Full-width for mobile */
+      margin-bottom: 10px; /* Space between filters */
+    }
+  
+    .help-section-container {
+      padding: 0 5px; /* Minimal padding */
+    }
+  }
+  .help-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .help-page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .filter-section {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+  }
+  
+  .filter-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 220px;
+  }
+  
+  .filter-select option {
+    padding: 5px;
+  }
+  
+  .help-section-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .help-section-container p {
+    color: #555;
+    font-size: 16px;
+  }
+  
+  .help-section {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  
+  .help-section h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .help-section p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+  }
+  

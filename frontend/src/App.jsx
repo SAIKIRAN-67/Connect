@@ -6,6 +6,7 @@ import PostProblem from './pages/PostProblem';
 import ProfilePage from './pages/ProfilePage';
 import Dashboard from './pages/Dashboard';
 import EditProblem from './pages/Editproblem';
+import Help from './pages/Help';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path='/profile' element={<ProfilePage/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/edit' element={<EditProblem/>}/>
+          <Route path='/help' element={<Help/>}/>
         </Routes>
+
       </Router>
     </>
   )

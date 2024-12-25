@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { storage } from '../firebase.js';
 import {ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 const Container = styled.div`
   max-width: 700px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #f0f2f5;
+  background: linear-gradient(180deg, #e3f2fd, #f0f4c3);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 `;
@@ -130,7 +131,9 @@ function PostProblem() {
   const [mediaFiles, setMediaFiles] = useState([]);
   const [mobilenumber, setMobilenumber] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [category,setCategory]=useState("");
   const [loading, setLoading] = useState(false);
+  const [willingness,setWillingness]=useState("");
   const constituencies={
     'Anantapur':["Rayadurg","Uravakonda","Guntakal","Tadipatri","Singanamala","Anantapur Urban","Kalyandurg","Raptadu"],
     'Sri Sathya Sai':["Madakasira","Hindupur","Penukonda","Puttaparthi","Dharmavaram","Kadiri"],
@@ -186,7 +189,7 @@ function PostProblem() {
       // Prepare form dat
 
       // Submit form data to your server
-      const res = await axios.post('http://localhost:3000/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency});
+      const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency,category,details:willingness});
       console.log(res);
       setSuccessMessage('Problem submitted successfully!');
       setTitle('');
@@ -198,6 +201,13 @@ function PostProblem() {
       console.error('Error submitting problem:', error);
     }
   };
+  const navigate=useNavigate();
+  useEffect(()=>{
+    const user=Cookies.get("email");
+    if(user=="" || user==null){
+      navigate("/signin");
+    }
+  },[])
 
   return (
     <Container>
@@ -234,6 +244,19 @@ function PostProblem() {
                 {constituency}
               </option>
             ))}
+        </Select>
+        <Label>Category</Label>
+        <Select
+          value={selectedConstituency}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          <option>Personal</option>
+          <option>Community</option>
+          <option>Student</option>
         </Select>
         <Label>Problem Title</Label>
         <Input
@@ -277,6 +300,18 @@ function PostProblem() {
           onChange={(e) => setMobilenumber(e.target.value)}
           required
         /> 
+        <Label>Willing to display mobilenumber</Label>
+        <Select
+          value={willingness}
+          onChange={(e) => setWillingness(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Select
+          </option>
+          <option>Yes</option>
+          <option>No</option>
+        </Select>
         <SubmitButton type="submit">Submit Problem</SubmitButton>
       </Form>
     </Container>

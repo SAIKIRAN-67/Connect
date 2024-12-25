@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
 import axios from "axios";
+import {auth} from "../firebase.js"
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Import js-cookie
-
 const Signin = () => {
+  useEffect(()=>{
+    if(Cookies.get("email")!=null || Cookies.get("email")!=""){
+      navigate("/");
+    }
+  })
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-
+  const [responseMessage, setResponseMessage] = useState('');
+  const [error,setError]=useState("");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState({ ...formState, [name]: value });
@@ -25,21 +31,33 @@ const Signin = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setResponseMessage('');
     try {
       // Simulated backend call
-      const res = await axios.post("http://localhost:3000/api/auth/signin", {
-        email: formState.email,
-        password: formState.password,
-      });
-
-      if (res.data.verified) {
-        Cookies.set('email', formState.email, { expires: 7 }); // Store email in cookies for 7 days
-        navigate("/");
-      } else {
-        alert("Sign-in failed. Please check your credentials.");
+      const userCredential=await signInWithEmailAndPassword(auth,email,password);
+      const user = userCredential.user;
+      if (user.emailVerified) {
+        console.log("User is verified and signed in successfully.");
+        const res = await axios.post("https://connect-aawd.onrender.com/api/auth/signin", {
+          email: formState.email,
+          password: formState.password,
+        });
+        if(res.data.message=="Sign in success"){
+          Cookies.set('email', result.user.email, { expires: 7 })
+          navigate("/");
+        }
+        else if(res.data.message=="User not found"){
+          setError("User not Found");
+        }
+      } else if(!user.emailVerified) {
+        alert("Email is not verified. Please verify your email first.");
+        // Optionally, sign the user out immediately after checking
+        auth.signOut();
+        return false; // Email not verified, prevent sign-in
       }
     } catch (error) {
-      console.error("Sign-in error:", error);
+
+      console.error("Sign-in error:",error);
     }
   };
 
@@ -49,7 +67,7 @@ const Signin = () => {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
 
-      const res = await axios.post("http://localhost:3000/api/auth/google", {
+      const res = await axios.post("https://connect-aawd.onrender.com/api/auth/google", {
         email: result.user.email,
       });
 
@@ -57,17 +75,19 @@ const Signin = () => {
         Cookies.set('email', result.user.email, { expires: 7 }); // Store email in cookies for 7 days
         navigate("/");
       }
-    } catch (error) {
+    }catch (error) {
       console.error("Google sign-in error:", error);
+      console.log(error.response.data.message);
+      setError(error.response.data.message)
     }
   };
-
   return (
     <Container>
       <BackgroundAnimation />
       <SignInBox>
         <Title>Welcome Back!</Title>
         <Subtitle>Sign in to your account</Subtitle>
+        {error?<p>{error}</p>:<p></p>}
         <Form onSubmit={handleSignIn}>
           <Input
             type="email"

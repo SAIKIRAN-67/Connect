@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Problem from "../Problem";
 import Cookies from "js-cookie";
-import "./ProfilePage.css";
 import { useNavigate } from "react-router-dom";
-import ProblemDetails from "./ProblemDetails";
 import Profileproblem from "./Profileproblem";
+import "./ProfilePage.css";
+import { Link } from "react-router-dom";
 function ProfilePage() {
   const [profileImage, setProfileImage] = useState(null);
   const [problems, setProblems] = useState([]);
   const navigate = useNavigate();
-
+  const [email,setEmail]=useState(Cookies.get("email"))
   // Fetch user problems from the API
   useEffect(() => {
+    const user=Cookies.get("email");
+    if(user== null|| user==""){
+      navigate("/signin")
+    }
     const fetchProblems = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/problem/getuserproblems",
+          "https://connect-aawd.onrender.com/api/problem/getuserproblems",
           { email: Cookies.get("email") }
         );
-        console.log("rese:",response);
         setProblems(response.data); // Assuming response.data contains an array of problems
       } catch (error) {
         console.error("Error fetching problems:", error);
       }
     };
     fetchProblems();
-  }, []);
+  }, [problems]);
 
   const handleProfileImageChange = (e) => {
     setProfileImage(URL.createObjectURL(e.target.files[0]));
@@ -34,10 +36,12 @@ function ProfilePage() {
 
   const handleDeleteProblem = async (problemId) => {
     try {
-      await axios.post("http://localhost:3000/api/problem/deleteproblem", {
+      await axios.post("https://connect-aawd.onrender.com/api/problem/deleteproblem", {
         problemId,
       });
-      setProblems(problems.filter((problem) => problem.problemId !== problemId));
+      setProblems((prevProblems) =>
+        prevProblems.filter((problem) => problem.problemId !== problemId)
+      );
       alert("Problem deleted successfully!");
     } catch (error) {
       console.error("Error deleting problem:", error);
@@ -65,24 +69,23 @@ function ProfilePage() {
         </div>
 
         <div>
-          <h2 className="username">John Doe</h2>
-          <input
-            type="file"
-            accept="image/*"
-            id="profile-upload"
-            className="profile-upload-input"
-            onChange={handleProfileImageChange}
-          />
+          <h2 className="username">{email}</h2>
+          
           <label htmlFor="profile-upload" className="upload-button">
             Update
           </label>
+          
         </div>
       </div>
 
       <div className="posts-section">
         <h2>Your Problems</h2>
         <div className="problems-grid">
-          <Profileproblem problems={problems}/>
+          <Profileproblem
+            problems={problems}
+            onDeleteProblem={handleDeleteProblem}
+            onEditProblem={handleEditProblem}
+          />
         </div>
       </div>
     </div>

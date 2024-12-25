@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
-import axios from "axios";
 import { Link } from 'react-router-dom';
-
+import { GoogleAuthProvider, getAuth, signInWithPopup,sendEmailVerification ,createUserWithEmailAndPassword} from 'firebase/auth';
+import { app } from '../firebase.js';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'; 
 const Signup = () => {
   const [formState, setFormState] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
+  const navigate=useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -29,28 +33,75 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     setResponseMessage(''); // Clear previous response messages
-  
+    
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/signup", formState);
+      // Step 1: Create user with Firebase Authentication
+      const auth = getAuth(app);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formState.email,
+        formState.password
+      );
+  
+      const user = userCredential.user;
+  
+      // Step 2: Send email verification
+      await sendEmailVerification(user);
+      console.log("Verification email sent.");
+  
+      // Step 3: Save user details in your backend if needed
+      const res = await axios.post("https://connect-aawd.onrender.com/api/auth/signup", formState);
       console.log(res);
-      if (res.data.success) {
-        setResponseMessage("Sign-up successful! Please check your email to verify your account.");
+  
+      if (res.data.message === "User Created successfully") {
+        setResponseMessage(
+          "Sign-up successful! Please check your email to verify your account."
+        );
         setIsError(false); // Success message
       } else {
         setResponseMessage(res.data.message);
         setIsError(true); // Error message
       }
     } catch (error) {
+      console.error("Sign-up error:", error);
       setResponseMessage("Sign-up error. Please try again.");
       setIsError(true); // Error message
     } finally {
       setLoading(false);
     }
   };
-  
+  function sendVerificationEmail(user) {
+    if (user) {
+      sendEmailVerification(user)
+        .then(() => {
+          console.log("Verification email sent.");
+          alert("Verification email sent. Please check your inbox.");
+        })
+        .catch((error) => {
+          console.error("Error sending verification email:", error);
+          alert(`Failed to send verification email: ${error.message}`);
+        });
+    } else {
+      alert("No user is logged in.");
+    }
+  }
+  const handleGoogleClick = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
 
-  const handleGoogleSignUp = () => {
-    console.log('Sign up with Google');
+      const res = await axios.post("https://connect-aawd.onrender.com/api/auth/google", {
+        email: result.user.email,
+      });
+
+      if (res.data.verified) {
+        Cookies.set('email', result.user.email, { expires: 7 }); // Store email in cookies for 7 days
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
   };
 
   return (
@@ -103,7 +154,7 @@ const Signup = () => {
           </Button>
         </Form>
         <OrDivider>or</OrDivider>
-        <GoogleButton onClick={handleGoogleSignUp}>
+        <GoogleButton onClick={handleGoogleClick}>
           <FaGoogle /> Sign up with Google
         </GoogleButton>
         <Noaccount><span>Have an account?</span><Link id='signup' to="/signin"> Signin</Link></Noaccount>

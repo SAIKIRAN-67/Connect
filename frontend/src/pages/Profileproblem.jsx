@@ -2,20 +2,32 @@ import React from 'react'
 import axios from 'axios';
 import "./Profileproblem.css";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 const Profileproblem = ({problems}) => {
   var [filteredProblems,setFilteredProblems]=useState([]);
   const [idFilter, setIdFilter] = useState('');
+  const navigate=useNavigate();
   const handleDeleteProblem = async (problemId) => {
     try {
-      await axios.post("http://localhost:3000/api/problem/deleteproblem", {
+      await axios.post("https://connect-aawd.onrender.com/api/problem/deleteproblem", {
         problemId,
       });
-      setProblems(problems.filter((problem) => problem.problemId !== problemId));
+      setFilteredProblems(problems.filter((problem) => problem.problemId !== problemId));
       alert("Problem deleted successfully!");
     } catch (error) {
       console.error("Error deleting problem:", error);
     }
   };
+
+  const handleEditProblem=async(problemId)=>{
+    try {
+      Cookies.set('problemId',problemId, { expires: 7 });
+      navigate("/edit");
+    } catch (error) {
+      
+    }
+  }
   filteredProblems = idFilter
     ? problems.filter((problem) => problem.problemId.includes(idFilter))
     : problems;
@@ -76,7 +88,7 @@ const Profileproblem = ({problems}) => {
                 
                 <button
                   className="action-button green"
-                  onClick={() => updateStatus(problem.problemId, 'Resolved')}
+                  onClick={() => handleEditProblem(problem.problemId)}
                 >
                   Edit
                 </button>
