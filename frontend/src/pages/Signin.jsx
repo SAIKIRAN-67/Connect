@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Import js-cookie
 const Signin = () => {
   useEffect(()=>{
-    if(Cookies.get("email")!=null || Cookies.get("email")!=""){
+    if(Cookies.get("email")){
       navigate("/");
     }
-  })
+  },[])
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
     email: '',
@@ -38,7 +38,7 @@ const Signin = () => {
       const user = userCredential.user;
       if (user.emailVerified) {
         console.log("User is verified and signed in successfully.");
-        const res = await axios.post("https://connect-aawd.onrender.com/api/auth/signin", {
+        const res = await axios.post("http://localhost:3000/api/auth/signin", {
           email: formState.email,
           password: formState.password,
         });
@@ -85,7 +85,7 @@ const Signin = () => {
     <Container>
       <BackgroundAnimation />
       <SignInBox>
-        <Title>Welcome Back!</Title>
+        <Title>Welcome Back 1!</Title>
         <Subtitle>Sign in to your account</Subtitle>
         {error?<p>{error}</p>:<p></p>}
         <Form onSubmit={handleSignIn}>
