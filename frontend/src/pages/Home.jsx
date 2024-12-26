@@ -101,8 +101,8 @@ function Home() {
     );
   });
   const handleLogout=()=>{
-    Cookies.remove("email");
     navigate("/signin");
+    Cookies.remove("email");
   }
   return (
     <div className="home-container">
