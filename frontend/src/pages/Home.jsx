@@ -6,7 +6,6 @@ import "./Home.css"; // External CSS
 import {Link, useNavigate} from "react-router-dom"
 import Homeproblem from "./Homeproblem";
 import Cookies from 'js-cookie';
-import { Cursor } from "mongoose";
 const constituencies = {
   'Anantapur': ["Rayadurg", "Uravakonda", "Guntakal", "Tadipatri", "Singanamala", "Anantapur Urban", "Kalyandurg", "Raptadu"],
   'Sri Sathya Sai': ["Madakasira", "Hindupur", "Penukonda", "Puttaparthi", "Dharmavaram", "Kadiri"],
