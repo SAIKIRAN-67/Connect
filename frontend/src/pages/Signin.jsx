@@ -38,7 +38,7 @@ const Signin = () => {
       const user = userCredential.user;
       if (user.emailVerified) {
         console.log("User is verified and signed in successfully.");
-        const res = await axios.post("http://localhost:3000/api/auth/signin", {
+        const res = await axios.post("https://connect-aawd.onrender.com/api/auth/signin", {
           email: formState.email,
           password: formState.password,
         });
