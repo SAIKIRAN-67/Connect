@@ -125,6 +125,7 @@ const VideoPreview = styled.video`
 
 function PostProblem() {
   const [title, setTitle] = useState('');
+  const [village,setVillage]=useState('');
   const [description, setDescription] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedConstituency, setSelectedConstituency] = useState('');
@@ -189,7 +190,7 @@ function PostProblem() {
       // Prepare form dat
 
       // Submit form data to your server
-      const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency,category,details:willingness});
+      const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency,category,details:willingness,village});
       console.log(res);
       setSuccessMessage('Problem submitted successfully!');
       setTitle('');
@@ -245,9 +246,18 @@ function PostProblem() {
               </option>
             ))}
         </Select>
+        <Label>Village</Label>
+        <Input
+          type="text"
+          value={village}
+          onChange={(e) => setVillage(e.target.value)}
+          required
+          placeholder="Village"
+          disabled={!selectedDistrict}
+        />
         <Label>Category</Label>
         <Select
-          value={selectedConstituency}
+          value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
         >

@@ -1,7 +1,8 @@
 import React from 'react'
 import ImageSlider from '../ImageSlider';
 import "./Homeproblem.css"
-const Homeproblem = ({ title, description, images, district, constituency, problemId, onEdit, onDelete }) => {
+const Homeproblem = ({ title, description, images, district, constituency, problemId, onEdit, onDelete,createdAt,village}) => {
+    let date=createdAt.substring(0,10);
     return (
         // <div className="problem-container">
         //   <div className='imageholder'>
@@ -40,16 +41,24 @@ const Homeproblem = ({ title, description, images, district, constituency, probl
 
     <div className="problem-info">
       <div className="info-item">
-        <span className="info-label">District:</span>
-        <span className="info-value">{district}</span>
+        <span className="info-label">Village:</span>
+        <span className="info-value">{village?village:""}</span>
       </div>
       <div className="info-item">
         <span className="info-label">Constituency:</span>
         <span className="info-value">{constituency}</span>
       </div>
       <div className="info-item">
+        <span className="info-label">District:</span>
+        <span className="info-value">{district}</span>
+      </div>
+      <div className="info-item">
         <span className="info-label">Problem ID:</span>
         <span className="info-value">{problemId}</span>
+      </div>
+      <div className="info-item">
+        <span className="info-label">Created At:</span>
+        <span className="info-value">{date?date:""}</span>
       </div>
     </div>
   </div>

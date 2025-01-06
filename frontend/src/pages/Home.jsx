@@ -32,14 +32,13 @@ const constituencies = {
   'Kurnool': ["Kodumur", "Yemmiganur", "Mantralayam", "Adoni", "Alur", "Kurnool"],
   'Chittoor': ["Punganur", "Nagari", "Gangadhara Nellore", "Chittoor", "Puthalapattu", "Palamaner", "Kuppam"]
 };
-
 function Home() {
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [districts, setDistricts] = useState(Object.keys(constituencies)); // Dynamically set districts from the object
   const [constituencyList, setConstituencies] = useState([]); // List of constituencies that will be filtered
-  const [filters, setFilters] = useState({ district: "", constituency: "", searchId: "" });
+  const [filters, setFilters] = useState({ district: "", constituency: "", searchId: "",startDate:"" ,village:""});
   const navigate=useNavigate();
   const togglePanel = () => {
     setShowPanel(!showPanel); // Toggle visibility
@@ -92,14 +91,44 @@ function Home() {
       
     closeNav();
   }
+  // const filteredProblems = problems.filter((problem) => {
+  //   const { district, constituency, searchId,title,startDate} = filters;
+  //   const problemDate = new Date(problem.createdAt);
+  //   console.log("problem:",problemDate);
+  //   console.log(startDate);
+  //   const isInDateRange = (!startDate || problemDate == new Date(startDate))
+  //   return (
+  //     (!district || problem.district === district) &&
+  //     (!constituency || problem.constituency === constituency) &&
+  //     (!title || problem.title.includes(title))&&
+  //     isInDateRange
+  //   );
+  // });
   const filteredProblems = problems.filter((problem) => {
-    const { district, constituency, searchId,title } = filters;
+    const { district, constituency, title, startDate, endDate,village } = filters;
+    
+    // Create Date objects for the problem's created date and the filter start date
+    const problemDate = new Date(problem.createdAt);
+    
+    // Normalize both dates to 'YYYY-MM-DD' to remove time component for comparison
+    const normalizedProblemDate = problemDate.toISOString().split('T')[0];  // "YYYY-MM-DD"
+    const normalizedStartDate = startDate ? new Date(startDate).toISOString().split('T')[0] : null;
+    
+    console.log("Problem Date:", normalizedProblemDate);
+    console.log("Start Date:", normalizedStartDate);
+    
+    // Check if the problem's date is within the selected start date
+    const isInDateRange = !normalizedStartDate || normalizedProblemDate == normalizedStartDate;
+  
     return (
       (!district || problem.district === district) &&
       (!constituency || problem.constituency === constituency) &&
-      (!title || problem.title.includes(title))
+      (!title || problem.title.toLowerCase().includes(title.toLowerCase())) &&
+      isInDateRange &&
+      (!village || (problem.village ? problem.village.toLowerCase().includes(village.toLowerCase()) : ""))
     );
   });
+  filteredProblems.reverse();
   const handleLogout=()=>{
     navigate("/signin");
     Cookies.remove("email");
@@ -108,7 +137,7 @@ function Home() {
     <div className="home-container">
       <div id="sideMenu" className="sideMenu">
         <a className="close" onClick={closeNav}>X</a>
-        <div className="filters">
+        <div className="filters" id="filters1">
             <select className="district1" name="district" value={filters.district} onChange={handleDistrictChange}>
               <option value="">Select District</option>
               {districts.map((district) => (
@@ -126,12 +155,28 @@ function Home() {
               ))}
             </select>
             <input
+              className="village1"
+              name="village"
+              type="text"
+              placeholder="    Search by Village"
+              value={filters.village}
+              onChange={handleFilterChange}
+            />
+            <input
               className="tit1"
               type="text"
               name="title"
               placeholder="    Search by title"
               value={filters.title}
               onChange={handleFilterChange}
+            />
+            <input
+              className="date1"
+              type="date"
+              name="startDate"
+              value={filters.startDate}
+              onChange={handleFilterChange}
+              placeholder="Start Date"
             />
         </div>
       </div>
@@ -162,12 +207,29 @@ function Home() {
             ))}
           </select>
           <input
+            className="village"
+            name="village"
+            type="text"
+            placeholder="Search by Village"
+            value={filters.village}
+            onChange={handleFilterChange}
+
+          />
+          <input
             className="tit"
             type="text"
             name="title"
             placeholder="Search by title"
             value={filters.title}
             onChange={handleFilterChange}
+          />
+          <input
+            className="date"
+            type="date"
+            name="startDate"
+            value={filters.startDate}
+            onChange={handleFilterChange}
+            placeholder="Start Date"
           />
         </div>
         <div>

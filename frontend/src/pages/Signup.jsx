@@ -108,8 +108,8 @@ const Signup = () => {
     <Container>
       <BackgroundAnimation />
       <SignUpBox>
-        <Title>Join CampusConnect</Title>
-        <Subtitle>Be part of your campus community</Subtitle>
+        <Title>Join Connect</Title>
+        <Subtitle>Be part of your community</Subtitle>
         
         {responseMessage && <ResponseMessage isError={isError}>{responseMessage}</ResponseMessage>}
 

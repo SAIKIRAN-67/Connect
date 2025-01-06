@@ -33,7 +33,7 @@ body {
   color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-evenly; /* Space components evenly */
+  justify-content: space-around; /* Space components evenly */
   align-items: center;
   z-index: 1000;
 }
@@ -59,7 +59,8 @@ body {
 /* Filters */
 .filters {
   display: flex;
-  gap: 15px;
+  gap: 5px;
+  width: 40%;
 }
 
 .filters select,
@@ -141,7 +142,7 @@ body {
 .problems-list {
   width: 100%; /* Ensure full width for all problems */
   display: flex;
-  flex-direction:column;
+  flex-direction:column-reverse;
   align-items: center; /* Center the problems in the container */
   gap: 10px; /* Add space between each problem */
   padding: 20px;
@@ -197,10 +198,16 @@ body {
     flex-direction: column;
     gap: 5px; /* Add gap between elements in a vertical layout */
     padding: 10px;
+
   }
   .tit{
     display: none;
-
+  }
+  .village{
+    display: none;
+  }
+  .date{
+    display: none;
   }
   .district{
     display: none;
@@ -251,6 +258,9 @@ body {
   .search{
     display: none;
   }
+  #sideMenu{
+    display: none;
+  }
 }
 
 /* Styles for Larger Screens (Desktop) */
@@ -258,6 +268,7 @@ body {
   .problems-list {
     width: 80%; /* For larger screens, problems will occupy 80% of the width */
     padding: 20px;
+    flex-direction: column
   }
 
   .problem-card {
@@ -268,6 +279,9 @@ body {
     cursor: pointer;
   }
   .search{
+    display: none;
+  }
+  #sideMenu{
     display: none;
   }
 } 
