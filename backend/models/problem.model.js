@@ -49,6 +49,10 @@ const problemSchema = new mongoose.Schema({
     details:{
         type:String,
         required:true
+    },
+    problemvisibility:{
+        type:String,
+        default:"public"
     }
 }, { timestamps: true });
 
