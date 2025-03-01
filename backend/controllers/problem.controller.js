@@ -1,15 +1,15 @@
 import Problem from "../models/problem.model.js";
 
 export const postProblem=async(req,res)=>{
-    const {title,description,district,images,email,mobilenumber,constituency,category,details,village}=req.body;
+    const {title,description,district,images,email,mobilenumber,constituency,category,details,village,problemvisibility}=req.body;
     console.log(title,description,district,images,email,mobilenumber,constituency,category);
     try{
         if(email==null || title==null || description==null|| district==null || mobilenumber==null || constituency==null || category==null || details==null || village==null){
             return res.json({message:"Enter all required fields"});
         }
-        const newProblem=new Problem({email,title,description,district,images,mobilenumber,constituency,category,details,village});
+        const newProblem=new Problem({email,title,description,district,images,mobilenumber,constituency,category,details,village,problemvisibility});
         const response=await newProblem.save();
-        console.log(response)
+        console.log("response:",response);
         return res.status(201).json({message:"problem posted successfully"})
     }
     catch(error){
