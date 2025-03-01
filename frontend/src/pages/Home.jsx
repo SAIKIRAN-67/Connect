@@ -45,13 +45,22 @@ function Home() {
   };
   useEffect(() => {
     const user=Cookies.get("email");
+    if(user=="saik57908@gmail.com"){
+      navigate("/dashboard");
+    }
     if(user== null|| user==""){
       navigate("/signin")
     }
     const fetchProblems = async () => {
       try {
         const response = await axios.get("https://connect-aawd.onrender.com/api/problem/getallproblems");
-        setProblems(response.data);
+        let filres=[];
+        response.data.map((eachitem)=>{
+          if(eachitem.problemvisibility=="public"){
+            filres.push(eachitem);
+          }
+        });
+        setProblems(filres);
         setLoading(false);
       } catch (err) {
         setError("Failed to load problems. Please try again later.");
@@ -185,8 +194,9 @@ function Home() {
           <span onClick={openNav}><img  className="search" height={20} width={20} src="https://cdn-icons-png.flaticon.com/128/18598/18598801.png"/></span>
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
-          <Link to="/help">Help</Link>
+          <Link to="/help">Filter</Link>
           <Link to="/post">Post</Link>
+          <Link onClick={()=>{window.location.replace("https://sritridevtechnologiespvt.netlify.app/");}}>Portfolio</Link>
           <Link><span onClick={handleLogout} className="logoutmobile">Logout</span></Link>
         </div>
         <div className="filters">

@@ -135,6 +135,7 @@ function PostProblem() {
   const [category,setCategory]=useState("");
   const [loading, setLoading] = useState(false);
   const [willingness,setWillingness]=useState("");
+  const [problemVisibility, setProblemVisibility] = useState("public");
   const constituencies={
     'Anantapur':["Rayadurg","Uravakonda","Guntakal","Tadipatri","Singanamala","Anantapur Urban","Kalyandurg","Raptadu"],
     'Sri Sathya Sai':["Madakasira","Hindupur","Penukonda","Puttaparthi","Dharmavaram","Kadiri"],
@@ -190,13 +191,16 @@ function PostProblem() {
       // Prepare form dat
 
       // Submit form data to your server
-      const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency,category,details:willingness,village});
+      const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {title,description,mobilenumber,email,images:uploadedFileUrls,district:selectedDistrict,constituency:selectedConstituency,category,details:willingness,village,problemvisibility:problemVisibility});
       console.log(res);
       setSuccessMessage('Problem submitted successfully!');
       setTitle('');
       setDescription('');
       setSelectedDistrict('');
       setSelectedConstituency('');
+      setMobilenumber('');
+      setProblemVisibility('');
+      setWillingness();
       setMediaFiles([]);
     } catch (error) {
       console.error('Error submitting problem:', error);
@@ -208,7 +212,8 @@ function PostProblem() {
     if(user=="" || user==null){
       navigate("/signin");
     }
-  },[])
+    console.log(problemVisibility)
+  },[problemVisibility])
 
   return (
     <Container>
@@ -268,6 +273,16 @@ function PostProblem() {
           <option>Community</option>
           <option>Student</option>
         </Select>
+        {category === 'Personal' && (
+          <>
+             <Label>Problem Visibility</Label>
+          <Select value={problemVisibility} onChange={(e) => setProblemVisibility(e.target.value)} required>
+              <option value="" disabled>Select visibility</option>
+              <option >Public</option>
+              <option>Higher Officials</option>
+           </Select>
+         </>
+       )}
         <Label>Problem Title</Label>
         <Input
           type="text"
@@ -329,3 +344,206 @@ function PostProblem() {
 }
 
 export default PostProblem;
+// import React, { useEffect, useState } from 'react';
+// import styled from 'styled-components';
+// import axios from 'axios';
+// import { storage } from '../firebase.js';
+// import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+// import Cookies from 'js-cookie';
+// import { useNavigate } from 'react-router-dom';
+
+// const Container = styled.div`
+//   max-width: 700px;
+//   margin: 50px auto;
+//   padding: 20px;
+//   background: linear-gradient(180deg, #e3f2fd, #f0f4c3);
+//   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+//   border-radius: 8px;
+// `;
+
+// const Title = styled.h2`
+//   text-align: center;
+//   color: #333;
+//   font-weight: 600;
+//   margin-bottom: 20px;
+// `;
+
+// const Form = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+// `;
+
+// const Label = styled.label`
+//   font-weight: 600;
+//   color: #4a4a4a;
+// `;
+
+// const Input = styled.input`
+//   padding: 12px;
+//   font-size: 16px;
+//   border-radius: 5px;
+//   border: 1px solid #ccc;
+//   background-color: #fff;
+//   &:focus {
+//     border-color: #007bff;
+//   }
+// `;
+
+// const TextArea = styled.textarea`
+//   padding: 12px;
+//   font-size: 16px;
+//   border-radius: 5px;
+//   border: 1px solid #ccc;
+//   resize: none;
+//   height: 100px;
+//   background-color: #fff;
+//   &:focus {
+//     border-color: #007bff;
+//   }
+// `;
+
+// const Select = styled.select`
+//   padding: 12px;
+//   font-size: 16px;
+//   border-radius: 5px;
+//   border: 1px solid #ccc;
+//   background-color: #fff;
+//   &:focus {
+//     border-color: #007bff;
+//   }
+// `;
+
+// const SubmitButton = styled.button`
+//   padding: 14px;
+//   font-size: 18px;
+//   color: #fff;
+//   background-color: #007bff;
+//   border: none;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   font-weight: bold;
+//   transition: background-color 0.3s ease;
+
+//   &:hover {
+//     background-color: #0056b3;
+//   }
+// `;
+
+// const SuccessMessage = styled.p`
+//   color: #28a745;
+//   font-weight: 600;
+//   text-align: center;
+//   margin-top: 15px;
+// `;
+
+// function PostProblem() {
+//   const [title, setTitle] = useState('');
+//   const [village, setVillage] = useState('');
+//   const [description, setDescription] = useState('');
+//   const [selectedDistrict, setSelectedDistrict] = useState('');
+//   const [selectedConstituency, setSelectedConstituency] = useState('');
+//   const [mobilenumber, setMobilenumber] = useState(null);
+//   const [successMessage, setSuccessMessage] = useState('');
+//   const [category, setCategory] = useState('');
+//   const [willingness, setWillingness] = useState('');
+//   const [problemVisibility, setProblemVisibility] = useState('');
+  
+//   const handleCategoryChange = (e) => {
+//     setCategory(e.target.value);
+//     if (e.target.value !== 'Personal') {
+//       setProblemVisibility('');
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const email = Cookies.get('email'); 
+//       const res = await axios.post('https://connect-aawd.onrender.com/api/problem/postproblem', {
+//         title,
+//         description,
+//         mobilenumber,
+//         email,
+//         district: selectedDistrict,
+//         constituency: selectedConstituency,
+//         category,
+//         details: willingness,
+//         village,
+//         problemVisibility: category === "Personal" ? problemVisibility : undefined
+//       });
+
+//       console.log(res);
+//       setSuccessMessage('Problem submitted successfully!');
+//       setTitle('');
+//       setDescription('');
+//       setSelectedDistrict('');
+//       setSelectedConstituency('');
+//     } catch (error) {
+//       console.error('Error submitting problem:', error);
+//     }
+//   };
+
+//   return (
+//     <Container>
+//       {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+//       <Title>Post a Problem</Title>
+//       <Form onSubmit={handleSubmit}>
+//         <Label>Select District</Label>
+//         <Select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} required>
+//           <option value="" disabled>Select a district</option>
+//           {/* Add district options here */}
+//         </Select>
+
+//         <Label>Select Constituency</Label>
+//         <Select value={selectedConstituency} onChange={(e) => setSelectedConstituency(e.target.value)} required disabled={!selectedDistrict}>
+//           <option value="" disabled>Select a constituency</option>
+//           {/* Add constituency options here */}
+//         </Select>
+
+//         <Label>Village</Label>
+//         <Input type="text" value={village} onChange={(e) => setVillage(e.target.value)} required placeholder="Village" disabled={!selectedDistrict} />
+
+//         <Label>Category</Label>
+//         <Select value={category} onChange={handleCategoryChange} required>
+//           <option value="" disabled>Select a category</option>
+//           <option>Personal</option>
+//           <option>Community</option>
+//           <option>Student</option>
+//         </Select>
+
+//         {/* Conditionally render Problem Visibility field */}
+//         {category === 'Personal' && (
+//           <>
+//             <Label>Problem Visibility</Label>
+//             <Select value={problemVisibility} onChange={(e) => setProblemVisibility(e.target.value)} required>
+//               <option value="" disabled>Select visibility</option>
+//               <option value={}>Public</option>
+//               <option>Higher Officials</option>
+//             </Select>
+//           </>
+//         )}
+
+//         <Label>Problem Title</Label>
+//         <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Enter problem title" />
+
+//         <Label>Problem Description</Label>
+//         <TextArea value={description} onChange={(e) => setDescription(e.target.value)} required placeholder="Describe the problem in detail" />
+
+//         <Label>Mobile Number</Label>
+//         <Input type="number" value={mobilenumber} onChange={(e) => setMobilenumber(e.target.value)} required />
+
+//         <Label>Willing to display mobile number</Label>
+//         <Select value={willingness} onChange={(e) => setWillingness(e.target.value)} required>
+//           <option value="" disabled>Select</option>
+//           <option>Yes</option>
+//           <option>No</option>
+//         </Select>
+
+//         <SubmitButton type="submit">Submit Problem</SubmitButton>
+//       </Form>
+//     </Container>
+//   );
+// }
+
+// export default PostProblem;

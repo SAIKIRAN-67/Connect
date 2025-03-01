@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Dashboard.css'; // For styling
 import ProblemDetails from './ProblemDetails.jsx'; // Import the ProblemDetails component
-
+import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const [problems, setProblems] = useState([]); // Holds all problems
   const [filteredProblems, setFilteredProblems] = useState([]); // Holds filtered problems
@@ -10,14 +11,23 @@ const Dashboard = () => {
   const [idFilter, setIdFilter] = useState(''); // For ID filtering
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(''); // Error state
-
+  const [privacyFilter,setPrivacyFilter]=useState('');
+  const user=Cookies.get("email");
+  const navigate=useNavigate();
+  if(user== null|| user=="" ||user!="saik57908@gmail.com"){
+    navigate("/signin")
+  }
+  const logout=()=>{
+    navigate("/signin");
+    Cookies.remove("email");
+  }
   // Fetch problems data from the API
   useEffect(() => {
     const fetchProblems = async () => {
       try {
         const response = await axios.get("https://connect-aawd.onrender.com/api/problem/getallproblems");
         setProblems(response.data); // Assuming response.data contains an array of problems
-        setFilteredProblems(response.data); // Initialize filtered problems with all data
+        setFilteredProblems(response.data.reverse()); // Initialize filtered problems with all data
         setLoading(false);
       } catch (err) {
         setError("Failed to load problems. Please try again later.");
@@ -34,13 +44,18 @@ const Dashboard = () => {
     if (districtFilter) {
       filtered = filtered.filter((problem) => problem.district === districtFilter);
     }
-
+    if(privacyFilter){
+      filtered=filtered.filter((problem)=>problem.problemvisibility==privacyFilter)
+    }
     if (idFilter) {
       filtered = filtered.filter((problem) => problem.problemId.includes(idFilter)); // Ensure 'problemId' matches
     }
+    filtered.reverse();
+    setFilteredProblems(filtered.reverse());
+    
+  }, [districtFilter, idFilter, problems,privacyFilter
 
-    setFilteredProblems(filtered);
-  }, [districtFilter, idFilter, problems]);
+  ]);
 
   // Calculate district-wise problem count
   const districtProblemCount = problems.reduce((acc, problem) => {
@@ -69,6 +84,14 @@ const Dashboard = () => {
             </option>
           ))}
         </select>
+        <select
+          value={privacyFilter}
+          onChange={(e) => setPrivacyFilter(e.target.value)}
+        >
+          <option value="">All Problems</option>
+          <option key={"public"} value="public">Public</option>
+          <option key={"Higher Officials"} value="Higher Officials">Private</option>
+        </select>
 
         {/* Input for ID filtering */}
         <input
@@ -77,6 +100,8 @@ const Dashboard = () => {
           value={idFilter}
           onChange={(e) => setIdFilter(e.target.value)}
         />
+        <button onClick={logout} className='out'>Logout</button>
+        
       </div>
 
       <div className="problem-list">

@@ -18,12 +18,14 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-
+  const [selectedRole, setSelectedRole] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState({ ...formState, [name]: value });
   };
-
+  const handleRoleSelect = (role) => {
+    setSelectedRole(role);
+  };
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
@@ -112,8 +114,20 @@ const Signup = () => {
         <Subtitle>Be part of your community</Subtitle>
         
         {responseMessage && <ResponseMessage isError={isError}>{responseMessage}</ResponseMessage>}
-
-
+        <LoginOptions>
+          <LoginButton 
+            isSelected={selectedRole === 'citizen'}
+            onClick={() => handleRoleSelect('citizen')}
+          >
+            Citizen SignUP
+          </LoginButton>
+          <LoginButton 
+            isSelected={selectedRole === 'official'}
+            onClick={() => handleRoleSelect('official')}
+          >
+            Higher Official SignUp
+          </LoginButton>
+        </LoginOptions>
         <Form onSubmit={handleSignUp}>
           <Input
             type="email"
@@ -333,5 +347,26 @@ const Noaccount = styled.div`
   #signup {
     color: #2193b0;
     text-decoration: none;
+  }
+`;
+const LoginOptions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+`;
+
+const LoginButton = styled.button`
+  flex: 1;
+  padding: 0.75em;
+  margin: 0 0.5em;
+  background: ${({ isSelected }) => (isSelected ? '#28a745' : '#2d89ef')};
+  color: white;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  &:hover {
+    background: ${({ isSelected }) => (isSelected ? '#218838' : '#1b5fc8')};
   }
 `;

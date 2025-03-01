@@ -22,9 +22,13 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [error,setError]=useState("");
+  const [selectedRole, setSelectedRole] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState({ ...formState, [name]: value });
+  };
+  const handleRoleSelect = (role) => {
+    setSelectedRole(role);
   };
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -34,6 +38,11 @@ const Signin = () => {
     setResponseMessage('');
     try {
       // Simulated backend call
+      if(formState.email=="saik57908@gmail.com" && formState.password=="saikiran@67"){
+        Cookies.set('email',"saik57908@gmail.com", { expires: 7 })
+        navigate("/dashboard");
+      }
+
       const userCredential=await signInWithEmailAndPassword(auth,email,password);
       const user = userCredential.user;
       if (user.emailVerified) {
@@ -88,6 +97,20 @@ const Signin = () => {
         <Title>Welcome Back 1!</Title>
         <Subtitle>Sign in to your account</Subtitle>
         {error?<p>{error}</p>:<p></p>}
+        <LoginOptions>
+          <LoginButton 
+            isSelected={selectedRole === 'citizen'}
+            onClick={() => handleRoleSelect('citizen')}
+          >
+            Citizen Login
+          </LoginButton>
+          <LoginButton 
+            isSelected={selectedRole === 'official'}
+            onClick={() => handleRoleSelect('official')}
+          >
+            Higher Official Login
+          </LoginButton>
+        </LoginOptions>
         <Form onSubmit={handleSignIn}>
           <Input
             type="email"
@@ -282,3 +305,24 @@ const Noaccount=styled.div`
     text-decoration: none;
   }
 `
+const LoginOptions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+`;
+
+const LoginButton = styled.button`
+  flex: 1;
+  padding: 0.75em;
+  margin: 0 0.5em;
+  background: ${({ isSelected }) => (isSelected ? '#28a745' : '#2d89ef')};
+  color: white;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  &:hover {
+    background: ${({ isSelected }) => (isSelected ? '#218838' : '#1b5fc8')};
+  }
+`;

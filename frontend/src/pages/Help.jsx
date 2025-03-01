@@ -62,7 +62,7 @@ const Help = () => {
         <Link to="/post">Post</Link>
         <Link><span onClick={handleLogout} className="logoutmobile">Logout</span></Link>
       </div> */}
-      <h1 className="help-page-title">Help Page</h1>
+      <h1 className="help-page-title">Filter Page</h1>
 
       {/* Filters */}
       <div className="filter-section">
@@ -84,7 +84,7 @@ const Help = () => {
           <option value="Student">Student</option>
           <option value="Community">Community</option>
           <option value="Personal">Personal</option>
-          <option value="Personal">Health</option>
+          <option value="Health">Health</option>
           
         </select>
         <select

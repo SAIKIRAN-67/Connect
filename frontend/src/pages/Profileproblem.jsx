@@ -65,6 +65,9 @@ const Profileproblem = ({problems}) => {
                 <p>
                   <strong>Mobile:</strong> {problem.mobilenumber}
                 </p>
+                <p>
+                  <strong>Visibility:</strong> {problem.problemvisibility}
+                </p>
               </div>
 
               {problem.images && problem.images.length > 0 && (
