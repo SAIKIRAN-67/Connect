@@ -38,8 +38,8 @@ const Signin = () => {
     setResponseMessage('');
     try {
       // Simulated backend call
-      if(formState.email=="saik57908@gmail.com" && formState.password=="saikiran@67"){
-        Cookies.set('email',"saik57908@gmail.com", { expires: 7 })
+      if(formState.email=="upendra201@gmail.com" && formState.password=="upendra201@"){
+        Cookies.set('email',"upendra201@gmail.com", { expires: 7 })
         navigate("/dashboard");
       }
 

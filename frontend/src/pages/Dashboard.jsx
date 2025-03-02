@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [privacyFilter,setPrivacyFilter]=useState('');
   const user=Cookies.get("email");
   const navigate=useNavigate();
-  if(user== null|| user=="" ||user!="saik57908@gmail.com"){
+  if(user== null|| user=="" ||user!="upendra201@gmail.com"){
     navigate("/signin")
   }
   const logout=()=>{

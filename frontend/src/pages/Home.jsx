@@ -45,7 +45,7 @@ function Home() {
   };
   useEffect(() => {
     const user=Cookies.get("email");
-    if(user=="saik57908@gmail.com"){
+    if(user=="upendra201@gmail.com"){
       navigate("/dashboard");
     }
     if(user== null|| user==""){
